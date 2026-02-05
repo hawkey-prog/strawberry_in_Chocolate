@@ -21,17 +21,37 @@ body {
     padding: 0 15px;
 }
 
-/* Шапка с фото (полная высота фото) */
+/* Шапка - фото ТОЛЬКО на мобильных */
 .header {
-    background: 
-        linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.45)),
-        url('https://ltdfoto.ru/images/2026/02/05/FON_1.jpg') center/cover no-repeat;
-    padding: 40px 0 80px 0;
+    background-color: #0a0a0a; /* Чёрный фон по умолчанию */
+    padding: 40px 0;
     text-align: center;
     position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+/* Фото только на мобильных устройствах */
+@media (max-width: 768px) {
+    .header {
+        background: 
+            linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.95)),
+            url('https://ltdfoto.ru/images/2026/02/05/FON_1.jpg') center/cover no-repeat;
+    }
+    
+    /* Делаем фото менее заметным на мобильных */
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 10, 10, 0.7);
+        z-index: 0;
+    }
 }
 
 .header-content {
@@ -40,151 +60,127 @@ body {
     width: 100%;
 }
 
-/* ПЛАВНЫЙ переход от фото к черному (убрал видимую линию) */
-.header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 200px; /* Увеличил высоту для более плавного перехода */
-    background: linear-gradient(to bottom, 
-        transparent 0%, 
-        rgba(10, 10, 10, 0.1) 15%,
-        rgba(10, 10, 10, 0.25) 30%,
-        rgba(10, 10, 10, 0.45) 50%,
-        rgba(10, 10, 10, 0.7) 75%,
-        #0a0a0a 100%);
-    z-index: 1;
-}
-
-/* Основной контент (черный фон) */
-.main-content {
-    background-color: #0a0a0a;
-    padding: 0;
-    flex: 1;
-    position: relative;
-    z-index: 2;
-    margin-top: -100px; /* Увеличил для плавного перехода */
-}
-
-/* Секция "Почему именно я?" - начало черного фона */
-.section-dark {
-    background-color: #0a0a0a;
-    padding: 100px 0 40px 0; /* Увеличил верхний отступ */
-    position: relative;
-}
-
-/* Контактная секция - возврат к фото */
-.contacts-section {
-    padding: 60px 0 100px 0;
+/* Плашка с эффектом стекла для профиля */
+.glass-card {
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 30px 25px;
+    margin: 0 auto 30px;
+    max-width: 380px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
 
-/* Градиентный фон для контактов (вертикальный градиент) */
-.contacts-section::before {
+/* Эффект свечения по краям */
+.glass-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        linear-gradient(to bottom, 
-            transparent 0%,
-            rgba(0, 0, 0, 0.2) 20%,
-            rgba(0, 0, 0, 0.4) 40%,
-            rgba(0, 0, 0, 0.6) 60%,
-            rgba(0, 0, 0, 0.8) 80%
-        ),
-        url('https://ltdfoto.ru/images/2026/02/05/FON_1.jpg') center/cover no-repeat;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        transparent, 
+        rgba(214, 51, 132, 0.1),
+        rgba(37, 211, 102, 0.1),
+        transparent);
+    border-radius: 26px;
     z-index: -1;
+    animation: glow 3s linear infinite;
+    background-size: 400% 400%;
 }
 
-/* Подвал на том же фото (без дублирования) */
-.footer-section {
-    background: 
-        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
-        url('https://ltdfoto.ru/images/2026/02/05/FON_1.jpg') center/cover no-repeat;
-    padding: 50px 0 60px 0;
-    text-align: center;
-    position: relative;
+@keyframes glow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
-/* Профиль */
+/* Профиль внутри стеклянной плашки */
 .profile {
     text-align: center;
-    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
 }
 
 .avatar {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    border: 6px solid rgba(255, 255, 255, 0.25);
+    border: 4px solid rgba(255, 255, 255, 0.2);
     object-fit: cover;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.7),
+        0 10px 30px rgba(0, 0, 0, 0.5),
         0 0 0 1px rgba(255, 255, 255, 0.1);
-    background-color: #ddd;
-    transition: transform 0.3s ease;
+    background-color: #1a1a1a;
+    transition: all 0.4s ease;
 }
 
 .avatar:hover {
     transform: scale(1.05);
+    border-color: rgba(214, 51, 132, 0.4);
+    box-shadow: 
+        0 15px 40px rgba(214, 51, 132, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .name {
     color: white;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 800;
-    margin-bottom: 15px;
-    text-shadow: 
-        0 2px 10px rgba(0, 0, 0, 0.8),
-        0 0 20px rgba(214, 51, 132, 0.3);
-    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .bio {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 17px;
-    max-width: 350px;
-    margin: 0 auto 25px;
-    line-height: 1.7;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-    padding: 0 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* Кнопки на фоне фото */
+/* Кнопки в стеклянной плашке */
 .action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin-bottom: 40px;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    border-radius: 16px;
+    padding: 18px;
+    border-radius: 14px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 18px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 17px;
+    transition: all 0.4s ease;
     text-align: center;
     border: none;
     cursor: pointer;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.5),
-        0 2px 0 rgba(255, 255, 255, 0.1) inset;
-    border: 3px solid transparent;
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
     position: relative;
     overflow: hidden;
-    z-index: 1;
 }
 
 .btn::before {
@@ -194,9 +190,8 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     transition: left 0.6s;
-    z-index: -1;
 }
 
 .btn:hover::before {
@@ -204,119 +199,100 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(145deg, #d63384, #9c1f5c);
+    background: linear-gradient(135deg, #d63384, #9c1f5c);
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .btn-primary:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-3px);
     box-shadow: 
-        0 15px 35px rgba(214, 51, 132, 0.5),
-        0 2px 0 rgba(255, 255, 255, 0.1) inset;
-    border-color: rgba(255, 255, 255, 0.3);
+        0 12px 30px rgba(214, 51, 132, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(230, 230, 230, 0.9));
-    color: #222;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.9));
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-secondary:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-3px);
     box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.4),
-        0 2px 0 rgba(255, 255, 255, 0.1) inset;
-    border-color: rgba(255, 255, 255, 0.4);
-    background: linear-gradient(145deg, white, #f0f0f0);
+        0 12px 30px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(50, 50, 50, 0.9), rgba(40, 40, 40, 0.9));
 }
 
 .btn-telegram {
-    background: linear-gradient(145deg, #0088cc, #005580);
+    background: linear-gradient(135deg, #0088cc, #005580);
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .btn-telegram:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-3px);
     box-shadow: 
-        0 15px 35px rgba(0, 136, 204, 0.5),
-        0 2px 0 rgba(255, 255, 255, 0.1) inset;
-    border-color: rgba(255, 255, 255, 0.3);
+        0 12px 30px rgba(0, 136, 204, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn i {
-    margin-right: 15px;
-    font-size: 24px;
+    margin-right: 12px;
+    font-size: 22px;
+}
+
+/* Основной контент */
+.main-content {
+    background-color: #0a0a0a;
+    padding: 20px 0 50px 0;
+    flex: 1;
 }
 
 /* Блоки контента */
 .content-block {
     background: linear-gradient(145deg, #151515, #0c0c0c);
-    border-radius: 24px;
-    padding: 28px;
-    margin-bottom: 30px;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
     box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.7),
-        0 2px 0 rgba(255, 255, 255, 0.05) inset,
-        0 0 0 2px rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.content-block::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent 30%, rgba(214, 51, 132, 0.03) 50%, transparent 70%);
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.content-block:hover::before {
-    opacity: 1;
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
 }
 
 .content-block:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.9),
-        0 2px 0 rgba(255, 255, 255, 0.05) inset,
-        0 0 0 2px rgba(255, 255, 255, 0.15);
+        0 15px 40px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .block-title {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #fff;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    position: relative;
-    z-index: 1;
 }
 
 .block-title i {
-    margin-right: 15px;
+    margin-right: 12px;
     color: #d63384;
-    font-size: 26px;
-    text-shadow: 0 0 10px rgba(214, 51, 132, 0.5);
+    font-size: 22px;
 }
 
 /* Информационные элементы */
 .info-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 22px;
-    position: relative;
-    z-index: 1;
+    margin-bottom: 18px;
 }
 
 .info-item:last-child {
@@ -324,197 +300,122 @@ body {
 }
 
 .info-icon {
-    min-width: 40px;
+    min-width: 35px;
     color: #d63384;
     margin-top: 3px;
-    font-size: 22px;
-    text-shadow: 0 0 8px rgba(214, 51, 132, 0.4);
+    font-size: 18px;
 }
 
 .info-text {
-    color: #e0e0e0;
-    line-height: 1.7;
-    font-size: 16px;
+    color: #ddd;
+    line-height: 1.6;
+    font-size: 15px;
 }
 
 .info-text strong {
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .info-text a {
     color: #d63384;
     text-decoration: none;
-    transition: all 0.3s;
-    font-weight: 600;
-    position: relative;
-}
-
-.info-text a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #d63384;
-    transition: width 0.3s;
+    transition: color 0.3s;
 }
 
 .info-text a:hover {
     color: #ff4da6;
-}
-
-.info-text a:hover::after {
-    width: 100%;
+    text-decoration: underline;
 }
 
 /* Галерея */
 .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 15px;
 }
 
 .gallery-item {
     width: 100%;
-    height: 120px;
-    border-radius: 12px;
+    height: 110px;
+    border-radius: 10px;
     object-fit: cover;
-    background: linear-gradient(145deg, #222, #1a1a1a);
+    background-color: #222;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 
-        0 6px 20px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.gallery-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-}
-
-.gallery-item:hover::before {
-    transform: translateX(100%);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.05);
 }
 
 .gallery-item:hover {
-    transform: scale(1.1) rotate(2deg);
-    box-shadow: 
-        0 12px 30px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
-    z-index: 10;
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Соцсети */
 .social-links {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 40px;
+    gap: 25px;
+    margin-top: 35px;
 }
 
 .social-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #1f1f1f, #151515);
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 28px;
+    font-size: 22px;
     text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.social-icon::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.social-icon:hover::before {
-    opacity: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-icon:hover {
-    transform: scale(1.2) translateY(-5px);
-    box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.15) translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .telegram { 
-    background: linear-gradient(145deg, #0088cc, #005580);
+    background: linear-gradient(135deg, #0088cc, #006699);
 }
 
-/* Текст в подвале */
+/* Подвал */
+.footer-section {
+    background-color: #0a0a0a;
+    padding: 40px 0 50px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .footer-text {
     text-align: center;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 15px;
-    line-height: 1.8;
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .footer-text p {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .footer-text a {
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
-    transition: all 0.3s;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 2px;
-}
-
-.footer-text a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: white;
-    transition: width 0.3s;
+    transition: color 0.3s;
 }
 
 .footer-text a:hover {
     color: white;
-}
-
-.footer-text a:hover::after {
-    width: 100%;
+    text-decoration: underline;
 }
 
 /* Список цен */
@@ -524,53 +425,23 @@ body {
 }
 
 .price-item {
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    position: relative;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .price-item:last-child {
     border-bottom: none;
 }
 
-.price-item::before {
-    content: '';
-    position: absolute;
-    left: -10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 4px;
-    background: #d63384;
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s, left 0.3s;
-}
-
-.price-item:hover::before {
-    opacity: 1;
-    left: -5px;
-}
-
 .price-item ul {
-    padding-left: 25px;
-    margin-top: 10px;
+    padding-left: 20px;
+    margin-top: 8px;
 }
 
 .price-item li {
-    margin-bottom: 8px;
-    font-size: 15px;
-    color: #bbb;
-    position: relative;
-    padding-left: 15px;
-}
-
-.price-item li::before {
-    content: '›';
-    position: absolute;
-    left: 0;
-    color: #d63384;
-    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #aaa;
 }
 
 /* Адаптивность */
@@ -580,79 +451,77 @@ body {
     }
     
     .header {
-        padding: 30px 0 60px 0;
+        padding: 30px 0;
         min-height: 90vh;
     }
     
-    .header::after {
-        height: 150px;
+    .glass-card {
+        padding: 25px 20px;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
     }
     
     .avatar {
-        width: 130px;
-        height: 130px;
+        width: 120px;
+        height: 120px;
     }
     
     .name {
-        font-size: 30px;
+        font-size: 28px;
     }
     
     .bio {
-        font-size: 16px;
-        max-width: 300px;
+        font-size: 15px;
     }
     
     .btn {
-        padding: 18px;
+        padding: 16px;
         font-size: 16px;
     }
     
     .content-block {
-        padding: 22px;
-        margin-bottom: 25px;
-        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .gallery-item {
-        height: 100px;
+        height: 95px;
     }
     
     .social-icon {
-        width: 55px;
-        height: 55px;
-        font-size: 25px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
     }
-    
-    .section-dark {
-        padding: 80px 0 40px 0;
-    }
-    
-    .contacts-section {
-        padding: 50px 0 80px 0;
+}
+
+@media (min-width: 769px) {
+    .header {
+        background-color: #0a0a0a;
     }
 }
 
 @media (max-width: 380px) {
     .gallery {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 10px;
     }
     
     .gallery-item {
-        height: 110px;
+        height: 100px;
     }
 }
 
-/* Плавный скролл и анимации */
+/* Плавный скролл */
 html {
     scroll-behavior: smooth;
 }
 
-/* Анимация появления элементов */
-@keyframes fadeInUp {
+/* Анимация появления */
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -660,11 +529,6 @@ html {
     }
 }
 
-.profile, .action-buttons, .content-block {
-    animation: fadeInUp 0.8s ease forwards;
+.glass-card, .content-block {
+    animation: fadeIn 0.8s ease forwards;
 }
-
-.content-block:nth-child(1) { animation-delay: 0.1s; }
-.content-block:nth-child(2) { animation-delay: 0.2s; }
-.content-block:nth-child(3) { animation-delay: 0.3s; }
-.content-block:nth-child(4) { animation-delay: 0.4s; }
